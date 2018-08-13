@@ -2,28 +2,25 @@ const path = require("path");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const outputDirectory = path.join(__dirname, "../dist");
 const bundelEsModules = process.env.BUNDEL_ES_MODULES === "true";
+const version = require(path.join(__dirname,"../package.json")).version;
 
 const presets = [];
 
-if(!bundelEsModules){
-    presets.push([
-        "@babel/preset-env",
-        {
-          targets: {
-            browsers: [
-                "Chrome 28"
-            ]
-          }
-        }
-    ])
-} else {
-    presets.push([
+if (!bundelEsModules) {
+  presets.push([
     "@babel/preset-env",
     {
       targets: {
-        browsers: [
-            "Chrome 61"
-        ]
+        browsers: ["Chrome 28"]
+      }
+    }
+  ]);
+} else {
+  presets.push([
+    "@babel/preset-env",
+    {
+      targets: {
+        browsers: ["Chrome 61"]
       }
     }
   ]);
@@ -34,7 +31,8 @@ module.exports = {
   entry: "./src/index.js",
   output: {
     path: outputDirectory,
-    filename: `js/main.${bundelEsModules ? "mjs" : "js"}`
+    filename: `js/main.v${version}.${bundelEsModules ? "mjs" : "js"}`,
+    chunkFilename: `js/[name].main.v${version}.${bundelEsModules ? "mjs" : "js"}`,
     // publicPath: "public"
   },
   module: {
@@ -45,7 +43,8 @@ module.exports = {
         use: {
           loader: "babel-loader",
           options: {
-            presets
+            presets,
+            plugins: ["@babel/syntax-dynamic-import"]
           }
         }
       }
