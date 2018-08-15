@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev:legacy": "cross-env BUNDEL_ES_MODULES=false webpack --watch ./src --config build/webpack.config.dev.js",
-    "dev:esmodules": "cross-env BUNDEL_ES_MODULES=true webpack --watch ./src --config build/webpack.config.dev.js",
+    "dev": "node build/webpack.config.dev.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
