@@ -4,27 +4,36 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "node build/webpack.config.dev.js",
+    "clean": "rm -rf ./dist",
+    "dev": "webpack --watch ./src --config build/webpack.config.dev.js",
+    "dev:legacy": "webpack --watch ./src --config build/webpack.config.js",
+    "dev:esmodule": "webpack --watch ./src --env.bundle=esmodules --config build/webpack.config.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@babel/polyfill": "^7.0.0-rc.1"
   },
   "devDependencies": {
-    "@babel/cli": "^7.0.0-rc.1",
-    "@babel/core": "^7.0.0-rc.1",
-    "@babel/plugin-syntax-dynamic-import": "^7.0.0-rc.1",
-    "@babel/preset-env": "^7.0.0-rc.1",
-    "babel-loader": "^8.0.0-beta.4",
-    "babel-preset-stage-1": "^6.24.1",
+    "@babel/cli": "^7.0.0-rc.2",
+    "@babel/core": "^7.0.0-rc.2",
+    "@babel/plugin-proposal-class-properties": "^7.0.0-rc.2",
+    "@babel/plugin-proposal-decorators": "^7.0.0-rc.2",
+    "@babel/plugin-proposal-export-default-from": "^7.0.0-rc.2",
+    "@babel/plugin-proposal-export-namespace-from": "^7.0.0-rc.2",
+    "@babel/plugin-proposal-optional-chaining": "^7.0.0-rc.2",
+    "@babel/plugin-syntax-dynamic-import": "^7.0.0-rc.2",
+    "@babel/polyfill": "^7.0.0-rc.2",
+    "@babel/preset-env": "^7.0.0-rc.2",
+    "babel-loader": "^8.0.0-beta.6",
+    "babel-plugin-transform-modern-regexp": "0.0.5",
     "clean-webpack-plugin": "^0.1.19",
     "copy-webpack-plugin": "^4.5.2",
-    "cross-env": "^5.2.0",
+    "deepmerge": "^2.1.1",
+    "html-webpack-include-assets-plugin": "^1.0.4",
     "html-webpack-plugin": "^3.2.0",
     "script-ext-html-webpack-plugin": "^2.0.1",
-    "webpack": "^4.16.5",
+    "webpack": "^4.17.1",
     "webpack-cli": "^3.1.0"
   }
 }

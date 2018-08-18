@@ -1,19 +1,36 @@
+"use strict";
+
 const webpack = require("webpack");
-const legacyConfig = require("./webpack.config.legacy");
-const esmodulesConfig = require("./webpack.config.esmodule");
+const config = require("./webpack.config");
+const legacyConfig = config();
+const esmodulesConfig = config({ bundle: "esmodules" });
+const HtmlWebpackIncludeAssetsPlugin = require("html-webpack-include-assets-plugin");
 
-const legacyCompiler = webpack(legacyConfig);
-const esmodulesCompiler = webpack(esmodulesConfig);
-legacyCompiler.run((err, stats) =>{
-    if(err){
-        console.error(err);
+module.exports = () =>
+  new Promise((resolve, reject) => {
+    webpack(legacyConfig).run((error, stats) => {
+      if (error) {
+        reject(error);
         return;
-    }
+      }
 
-    esmodulesCompiler.run((err2, stats2) =>{
-        if(err){
-            console.error(err);
-            return;
+      const assets = [];
+      for (const script in stats.compilation.assets) {
+        if (script.match(/main.*\.js$/)) {
+          assets.push({
+            path: script,
+            attributes: { nomodule: "nomodule" }
+          });
         }
-    })
-})
+      }
+
+      esmodulesConfig.plugins.push(
+        new HtmlWebpackIncludeAssetsPlugin({
+          assets,
+          append: false
+        })
+      );
+
+      resolve(esmodulesConfig);
+    });
+  });

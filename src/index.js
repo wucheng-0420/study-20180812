@@ -5,3 +5,4 @@ import(
   const u = new User.default("ND", 18);
   console.log(u.toString());
 });
+
