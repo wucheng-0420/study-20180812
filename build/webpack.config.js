@@ -9,7 +9,7 @@ module.exports = (env, argv) => {
   env = env || {};
   let jsExtension = ".js";
   const envOptions = {
-    useBuiltIns: "usage",
+    useBuiltIns: "usage"
   };
   if (env.bundle === "esmodules") {
     envOptions.targets = { esmodules: true };
@@ -30,13 +30,13 @@ module.exports = (env, argv) => {
     module: {
       rules: [
         {
-          test: /\.(m)?js$/,
+          test: /\.(js|jsx|mjs)$/,
           exclude: /(node_modules)/,
           use: {
             loader: "babel-loader",
             options: {
               presets: [
-                ["@babel/preset-env", envOptions]
+                ["@babel/preset-env", envOptions], "@babel/preset-react"
               ],
               plugins: [
                 "@babel/plugin-proposal-export-default-from",
@@ -74,5 +74,8 @@ module.exports = (env, argv) => {
       tls: 'empty',
       child_process: 'empty',
     },
+    resolve: {
+      extensions: ['.js', '.jsx', '.mjs', '.json']
+    }
   };
 };
