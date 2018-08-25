@@ -8,12 +8,12 @@
     "dev": "webpack --watch ./src --config build/webpack.config.dev.js",
     "dev:legacy": "webpack --watch ./src --config build/webpack.config.js",
     "dev:esmodule": "webpack --watch ./src --env.bundle=esmodules --config build/webpack.config.js",
+    "prod": "webpack --config build/webpack.config.prod.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "@babel/cli": "^7.0.0-rc.2",
     "@babel/core": "^7.0.0-rc.2",
@@ -26,6 +26,7 @@
     "@babel/polyfill": "^7.0.0-rc.2",
     "@babel/preset-env": "^7.0.0-rc.2",
     "babel-loader": "^8.0.0-beta.6",
+    "babel-minify-webpack-plugin": "^0.3.1",
     "babel-plugin-transform-modern-regexp": "0.0.5",
     "clean-webpack-plugin": "^0.1.19",
     "copy-webpack-plugin": "^4.5.2",

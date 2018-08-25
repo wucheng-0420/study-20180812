@@ -1,36 +1,18 @@
 "use strict";
 
-const webpack = require("webpack");
+const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const common = require("./webpack.config.common");
 const config = require("./webpack.config");
 const legacyConfig = config();
 const esmodulesConfig = config({ bundle: "esmodules" });
-const HtmlWebpackIncludeAssetsPlugin = require("html-webpack-include-assets-plugin");
+const { name: title } = require(path.join(__dirname, "../package.json"));
+const htmlWebpackPlugin = new HtmlWebpackPlugin({
+  title,
+  template: "public/index.html"
+});
 
-module.exports = () =>
-  new Promise((resolve, reject) => {
-    webpack(legacyConfig).run((error, stats) => {
-      if (error) {
-        reject(error);
-        return;
-      }
+legacyConfig.plugins.unshift(htmlWebpackPlugin);
+esmodulesConfig.plugins.unshift(htmlWebpackPlugin);
 
-      const assets = [];
-      for (const script in stats.compilation.assets) {
-        if (script.match(/main.*\.js$/)) {
-          assets.push({
-            path: script,
-            attributes: { nomodule: "nomodule" }
-          });
-        }
-      }
-
-      esmodulesConfig.plugins.push(
-        new HtmlWebpackIncludeAssetsPlugin({
-          assets,
-          append: false
-        })
-      );
-
-      resolve(esmodulesConfig);
-    });
-  });
+module.exports = () => common(legacyConfig, esmodulesConfig);

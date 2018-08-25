@@ -1,7 +1,6 @@
 "use strict";
 
 const path = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ScriptExtHtmlWebpackPlugin = require("script-ext-html-webpack-plugin");
 const outputDirectory = path.join(__dirname, "../dist");
 const { name: title, version } = require(path.join(__dirname, "../package.json"));
@@ -14,10 +13,12 @@ module.exports = (env, argv) => {
   };
   if (env.bundle === "esmodules") {
     envOptions.targets = { esmodules: true };
-    jsExtension = ".es.js";
+    jsExtension = ".mjs";
   }
 
   return {
+    // If you debug under IE, please use cheap-module-source-map
+    devtool: "eval",
     mode: "development",
     entry: "./src/index.js",
     output: {
@@ -29,7 +30,7 @@ module.exports = (env, argv) => {
     module: {
       rules: [
         {
-          test: /\.js$/,
+          test: /\.(m)?js$/,
           exclude: /(node_modules)/,
           use: {
             loader: "babel-loader",
@@ -52,10 +53,6 @@ module.exports = (env, argv) => {
       ]
     },
     plugins: [
-      new HtmlWebpackPlugin({
-        title,
-        template: "public/index.html"
-      }),
       new ScriptExtHtmlWebpackPlugin({
         custom: [
           {
@@ -64,11 +61,18 @@ module.exports = (env, argv) => {
             value: true
           }
         ],
-        module: /main.*\.es\.js/
+        module: /main.*\.mjs/
       })
     ],
     watchOptions: {
       ignored: ["node_modules", "dist"]
-    }
+    },
+    node: {
+      dgram: 'empty',
+      fs: 'empty',
+      net: 'empty',
+      tls: 'empty',
+      child_process: 'empty',
+    },
   };
 };
